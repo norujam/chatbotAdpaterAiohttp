@@ -4,7 +4,9 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.properties')
 
+
 class MongoDb:
+    @staticmethod
     def connect_db():
         global db
         db = connect(
@@ -17,6 +19,10 @@ class MongoDb:
             maxPoolSize=50,
         )
 
+    @staticmethod
     def close_db():
-        global db
-        db.close
+        try:
+            global db
+            db.close
+        except NameError:
+            pass
