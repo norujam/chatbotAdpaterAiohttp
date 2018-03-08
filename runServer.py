@@ -20,10 +20,11 @@ async def message_handle(request):
     message = (await request.post())['message']
     api_call_module = __import__(config['setSite']['apiCallModule'], fromlist=["detect_intent_texts"])
     result = await api_call_module.detect_intent_texts([message])
-    if any(s.find(result["action"]) for s in ['outer_retrieve', 'outer_response']):
-        response_result = await web_hook(result)
+    if any(result["action"].find(s) > -1 for s in ['outer_retrieve', 'outer_response']):
+        result["result"] = await web_hook(result)
+
     # result = await googleDialog.detect_intent_texts([message])
-    # logging.debug(result)
+    logging.debug(result)
 
     return web.json_response(result)
 
@@ -31,20 +32,16 @@ async def message_handle(request):
 async def web_hook(result):
     action = result['action'].split("_")
     parameters = result['parameters']
+    payload = {}
     for key in parameters.keys():
-        global pKey
-        pKey = key
+        payload[key] = parameters[key]
     # url = ""
     # payload = {}
 
-    if any(s.find(result["action"]) for s in ['outer_response']):
-        url = config['service']['service_url']+action[2]+"/"
-        payload = {"paramKey": pKey, "paramValue": parameters[pKey]}
-        html = requests.post(url, data=payload)
+    url = config['service']['service_url']+action[2]+"/"
+    html = requests.post(url, data=payload)
 
-    # logging.debug(html.text)
-    return web.json_response(json.loads(html.text))
-
+    return json.loads(html.text)["result"]
 
 app = web.Application()
 app.router.add_post('/chatbot/message/', message_handle)

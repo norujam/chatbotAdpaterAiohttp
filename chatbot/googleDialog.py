@@ -22,13 +22,13 @@ async def detect_intent_texts(texts):
     query_input = dialogflow.types.QueryInput(text=text_input)
 
     response = session_client.detect_intent(session=session, query_input=query_input)
-    # logging.debug("call detect="+response.query_result)
+    # logging.debug("call action="+response.query_result.action)
     dict_result = dict()
     dict_result["text"] = texts
     dict_result["action"] = response.query_result.action
     dict_result["main_message"] = response.query_result.fulfillment_messages[0].text.text[0]
 
-    if any(s.find(response.query_result.action) for s in ['outer_retrieve', 'outer_response']):
+    if any(response.query_result.action.find(s) > -1 for s in ['outer_retrieve', 'outer_response']):
         parameters = response.query_result.parameters
         dict_result["parameters"] = {}
         for i in parameters.keys():
