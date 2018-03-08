@@ -19,7 +19,10 @@ class ChatLogObjectMap:
             MongoDb.connect_db()
             chat_log = ChatLog(sentence=param["text"][0], actionType=param["action"])
             try:
-                chat_log.keywords = param["parameters"]
+                param_list = []
+                for key in param["parameters"].keys():
+                    param_list.append(param["parameters"][key])
+                chat_log.keywords = param_list
             except KeyError:
                 chat_log.keywords = []
             chat_log.save()
