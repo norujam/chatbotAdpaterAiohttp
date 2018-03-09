@@ -1,12 +1,11 @@
 from chatbot.mongoDb import MongoDb
 from chatbot.models import ChatLog
 import logging
-logger = logging.getLogger("django")
 
 
 class ShortSentenceError(Exception):
     def __init__(self, sentence):
-        logger.debug("no pattern/unknown short: "+sentence)
+        logging.debug("no pattern/unknown short: "+sentence)
 
 
 class ChatLogObjectMap:
@@ -27,7 +26,7 @@ class ChatLogObjectMap:
                 chat_log.keywords = []
             chat_log.save()
         except Exception as err:
-            logger.error(err)
+            logging.error(err)
         except ShortSentenceError:
             pass
         finally:
