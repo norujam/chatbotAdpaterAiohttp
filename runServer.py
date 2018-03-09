@@ -3,6 +3,7 @@ import setLogger, logging
 import configparser
 import json
 import requests
+from chatbot import doNotCallApi
 
 config = configparser.ConfigParser()
 config.read('config.properties')
@@ -18,10 +19,12 @@ if __name__ == '__main__':
 
 async def message_handle(request):
     message = (await request.post())['message']
-    api_call_module = __import__(config['setSite']['apiCallModule'], fromlist=["detect_intent_texts"])
-    result = await api_call_module.detect_intent_texts([message])
-    if any(result["action"].find(s) > -1 for s in ['outer_retrieve', 'outer_response']):
-        result["result"] = await web_hook(result)
+    result = doNotCallApi.check_message(message)
+    if result is None:
+        api_call_module = __import__(config['setSite']['apiCallModule'], fromlist=["detect_intent_texts"])
+        result = await api_call_module.detect_intent_texts([message])
+        if any(result["action"].find(s) > -1 for s in ['outer_retrieve', 'outer_response']):
+            result["result"] = await web_hook(result)
 
     # result = await googleDialog.detect_intent_texts([message])
     logging.debug(result)
