@@ -5,7 +5,7 @@ import json
 
 async def main():
     async with aiohttp.ClientSession() as session:
-        async with session.post("http://127.0.0.1:8000/chatbot/message/", data={'message': '오늘은 몇일인가요?'}) as resp:
+        async with session.post("http://127.0.0.1:8000/chatbot/message/", data={'message': '오늘은 몇일이지?'}) as resp:
             print(resp.status)
             result = await resp.text()
             print(json.loads(result))
