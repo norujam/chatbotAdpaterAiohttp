@@ -1,4 +1,4 @@
-from chatbot.mongoDb import MongoDb
+from db.mongoDb import MongoDb
 from chatbot.models import ChatLog
 import logging
 
