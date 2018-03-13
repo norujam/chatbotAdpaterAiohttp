@@ -1,5 +1,5 @@
 from db.mongoDb import MongoDb
-from chatbot.models import ChatLog
+from models.chatLog import ChatLog
 import logging
 
 
