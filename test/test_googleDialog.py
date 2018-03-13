@@ -13,4 +13,3 @@ class TestGoogleDialog(object):
     async def test_call_case2(self):
         result = await googleDialog.detect_intent_texts("유럽에 대한 정보를 알려줘요")
         assert result["main_message"] is not None
-1
