@@ -15,5 +15,10 @@ async def main():
             result = await resp.text()
             print(json.loads(result))
 
+        async with session.post("http://127.0.0.1:8000/chatbot/message/", data={'message': '미국으로 유학갈래요'}) as resp:
+            print(resp.status)
+            result = await resp.text()
+            print(json.loads(result))
+
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())

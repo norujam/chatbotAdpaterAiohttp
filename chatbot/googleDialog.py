@@ -34,7 +34,7 @@ async def detect_intent_texts(texts):
         for i in parameters.keys():
             dict_result["parameters"][i] = parameters[i]
 
-    logging.debug(dict_result)
-    await ChatLogObjectMap.insert_log(dict_result)
+        # logging.debug(dict_result)
+        await ChatLogObjectMap.insert_log(dict_result)
 
     return dict_result

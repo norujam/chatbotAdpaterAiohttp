@@ -15,7 +15,6 @@ class ChatLogObjectMap:
             if param["action"] == 'input.unknown' and len(param["text"][0]) < 5:
                 raise ShortSentenceError(param["text"][0])
 
-            MongoDb.connect_db()
             chat_log = ChatLog(sentence=param["text"][0], actionType=param["action"])
             try:
                 param_list = []
@@ -24,10 +23,8 @@ class ChatLogObjectMap:
                 chat_log.keywords = param_list
             except KeyError:
                 chat_log.keywords = []
-            chat_log.save()
+            MongoDb.insert_document(chat_log)
         except Exception as err:
             logging.error(err)
         except ShortSentenceError:
             pass
-        finally:
-            MongoDb.close_db()
