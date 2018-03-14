@@ -26,5 +26,6 @@ class ChatLogObjectMap:
             MongoDb.insert_document(chat_log)
         except Exception as err:
             logging.error(err)
+            raise err
         except ShortSentenceError:
             pass

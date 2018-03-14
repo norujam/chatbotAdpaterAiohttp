@@ -1,5 +1,6 @@
 from mongoengine import *
 import configparser
+import logging
 
 config = configparser.ConfigParser()
 config.read('config.properties')
@@ -20,6 +21,7 @@ class MongoDb:
                 maxPoolSize=50,
             )
         except Exception as err:
+            logging.error(err)
             raise err
 
     @staticmethod
@@ -36,6 +38,7 @@ class MongoDb:
             MongoDb.connect_db()
             obj_doc.save()
         except Exception as err:
+            logging.error(err)
             raise err
         finally:
             MongoDb.close_db()
