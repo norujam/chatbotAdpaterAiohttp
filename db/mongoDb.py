@@ -35,6 +35,7 @@ class MongoDb:
         try:
             MongoDb.connect_db()
             obj_doc.save()
-            MongoDb.close_db()
         except Exception as err:
             raise err
+        finally:
+            MongoDb.close_db()
