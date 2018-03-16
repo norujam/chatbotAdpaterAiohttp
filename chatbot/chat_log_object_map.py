@@ -1,10 +1,12 @@
-from db.mongoDb import MongoDb
-from models.chatLog import ChatLog
 import logging
+from db.mongo_db import MongoDb
+from models.chat_log import ChatLog
 
 
 class ShortSentenceError(Exception):
     def __init__(self, sentence):
+        super(ShortSentenceError, self).__init__(sentence)
+        self.message = sentence
         logging.debug("no pattern/unknown short: "+sentence)
 
 
@@ -24,8 +26,8 @@ class ChatLogObjectMap:
             except KeyError:
                 chat_log.keywords = []
             MongoDb.insert_document(chat_log)
+        except ShortSentenceError:
+            pass
         except Exception as err:
             logging.error(err)
             raise err
-        except ShortSentenceError:
-            pass

@@ -1,23 +1,25 @@
-from mongoengine import *
 import configparser
 import logging
+from mongoengine import connect
 
-config = configparser.ConfigParser()
-config.read('config.properties')
+CONFIG = configparser.ConfigParser()
+CONFIG.read('config.properties')
 
 
 class MongoDb:
+    def __init__(self):
+        self.db_connect = None
+
     @staticmethod
     def connect_db():
-        global db
         try:
-            db = connect(
-                db=config['DB']['db'],
-                host=config['DB']['host'],
-                port=int(config['DB']['port']),
-                username=config['DB']['username'],
-                password=config['DB']['password'],
-                authSource=config['DB']['authSource'],
+            MongoDb.db_connect = connect(
+                db=CONFIG['DB']['db'],
+                host=CONFIG['DB']['host'],
+                port=int(CONFIG['DB']['port']),
+                username=CONFIG['DB']['username'],
+                password=CONFIG['DB']['password'],
+                authSource=CONFIG['DB']['authSource'],
                 maxPoolSize=50,
             )
         except Exception as err:
@@ -27,8 +29,7 @@ class MongoDb:
     @staticmethod
     def close_db():
         try:
-            global db
-            db.close
+            MongoDb.db_connect.close()
         except NameError:
             pass
 

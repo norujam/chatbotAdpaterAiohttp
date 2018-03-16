@@ -1,9 +1,10 @@
-import dialogflow, configparser, logging
-from chatbot.chatLogObjectMap import ChatLogObjectMap
 import logging
+import configparser
+import dialogflow
+from chatbot.chat_log_object_map import ChatLogObjectMap
 
-config = configparser.ConfigParser()
-config.read('config.properties')
+CONFIG = configparser.ConfigParser()
+CONFIG.read('config.properties')
 
 
 async def detect_intent_texts(texts):
@@ -11,8 +12,8 @@ async def detect_intent_texts(texts):
     Using the same `session_id` between requests allows continuation
     of the conversaion."""
     try:
-        project_id = config['googleApi']['projectId']
-        session_id = config['googleApi']['sessionId']
+        project_id = CONFIG['googleApi']['projectId']
+        session_id = CONFIG['googleApi']['sessionId']
         language_code = "ko"
         session_client = dialogflow.SessionsClient()
 
@@ -29,7 +30,8 @@ async def detect_intent_texts(texts):
         dict_result["action"] = response.query_result.action
         dict_result["main_message"] = response.query_result.fulfillment_messages[0].text.text[0]
 
-        if any(response.query_result.action.find(s) > -1 for s in ['outer_retrieve', 'outer_response']):
+        if any(response.query_result.action.find(s) > -1
+               for s in ['outer_retrieve', 'outer_response']):
             parameters = response.query_result.parameters
             dict_result["parameters"] = {}
             for i in parameters.keys():

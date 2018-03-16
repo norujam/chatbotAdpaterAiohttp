@@ -1,10 +1,11 @@
-from aiohttp import web
-import setLogger, logging
+import setLogger
+import logging
 import configparser
 import json
 import requests
 import traceback
-from chatbot import doNotCallApi
+from aiohttp import web
+from chatbot import do_not_call_api
 
 config = configparser.ConfigParser()
 config.read('config.properties')
@@ -21,7 +22,7 @@ if __name__ == '__main__':
 async def message_handle(request):
     try:
         message = (await request.post())['message']
-        result = doNotCallApi.check_message(message)
+        result = do_not_call_api.check_message(message)
         if result is None:
             api_call_module = __import__(config['setSite']['apiCallModule'], fromlist=["detect_intent_texts"])
             result = await api_call_module.detect_intent_texts([message])

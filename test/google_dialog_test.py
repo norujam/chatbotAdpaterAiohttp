@@ -1,16 +1,16 @@
 import configparser
 import asynctest
-from chatbot import googleDialog
+from chatbot import google_dialog
 
 
 class GoogleDialogTest(asynctest.TestCase):
 
     async def test_call_case1(self):
-        result = await googleDialog.detect_intent_texts(["오늘은 몇일인가요?"])
+        result = await google_dialog.detect_intent_texts(["오늘은 몇일인가요?"])
         self.assertIsNotNone(result)
 
     async def test_call_case2(self):
-        result = await googleDialog.detect_intent_texts(["유럽에 대한 정보를 알려줘요"])
+        result = await google_dialog.detect_intent_texts(["유럽에 대한 정보를 알려줘요"])
         self.assertIsNotNone(result)
 
 

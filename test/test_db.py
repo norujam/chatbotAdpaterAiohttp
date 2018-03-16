@@ -1,4 +1,4 @@
-from db.mongoDbPyMongo import MongoDb
+from db.mongo_db_py_mongo import MongoDb
 import pytest
 import datetime
 
@@ -17,7 +17,7 @@ def test_db_connection():
 def test_db_insert(test_db_connection):
     global db
     global col
-    col = db.chat_log1
+    col = db.chat_log
     global data_id
     data_id = "test-13"
     result = col.insert_one({"_id": data_id, "actionType": "test", "sentence": "22", "keywords": ["11", "22"], "regDate": datetime.datetime.utcnow()})
